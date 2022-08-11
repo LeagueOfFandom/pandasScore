@@ -12,5 +12,9 @@ public class PandaScoreCrawling implements ApplicationRunner {
         System.out.println("PandaScoreCrawling is running");
     }
 
+    public String crawling() {
+        return "success";
+    }
+
 }
 
