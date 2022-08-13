@@ -35,10 +35,9 @@ spring:
       ddl-auto: create
     defer-datasource-initialization: true
 
-slack:
-  token: ${localkey.slack-api.token}
-fandascore:
-  key: ${localkey.fandascore-api.key}
+token:
+  slack: ${localkey.slack-api.token}
+  pandascore: ${localkey.pandascore-api.key}
 
 ---
 
@@ -47,15 +46,14 @@ spring:
     activate:
       on-profile: serverdb
   datasource:
-    url: ${lof.mariadb.url}/lof
+    url: ${lof.mariadb.url}/lofDev
     username: root
     password: ${lof.mariadb.password}
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     defer-datasource-initialization: true
-slack:
-  token: ${lof.slack.token}
-fandascore:
-  key: ${lof.pandascore.token}
+token:
+    slack: ${lof.slack.token}
+    pandascore: ${lof.pandascore.key}
