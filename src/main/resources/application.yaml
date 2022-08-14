@@ -16,7 +16,7 @@ spring:
       mode: always
 
 server:
-  port: 80
+  port: 8080
 
 ---
 
@@ -32,7 +32,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     defer-datasource-initialization: true
 
 token:
@@ -52,7 +52,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     defer-datasource-initialization: true
 token:
     slack: ${lof.slack.token}

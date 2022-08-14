@@ -5,6 +5,7 @@ import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
+import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.entity.ChampionEntity;
 import com.server.pandascore.entity.MatchDetailEntity;
 import com.server.pandascore.entity.MatchEntity;
@@ -28,6 +29,16 @@ public class Save {
     private final MatchDetailRepository matchDetailRepository;
 
     private final TeamRepository teamRepository;
+
+
+    public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
+        Long teamId = teamsDetailDto.getId();
+        TeamEntity teamEntity = teamRepository.findById(teamId).orElse(null);
+        if(teamEntity != null){
+            teamEntity.setStatus(teamsDetailDto.getStatus());
+            teamRepository.save(teamEntity);
+        }
+    }
 
     public void MatchDetailSave(GameDto gameDto){
         Long id = gameDto.getId();

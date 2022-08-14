@@ -5,6 +5,7 @@ import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
+import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.properties.Tokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,9 @@ public class PandaScoreCrawling implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
+        getChampionList();
         getTeamListBySerie(4763L);
         getMatchListByLeagueId(293L);
-
     }
 
     public HttpEntity<String> setHeaders() {
@@ -39,6 +40,19 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //ResponseEntity<String> response = restTemplate.exchange("https://api.pandascore.co/lol/leagues", HttpMethod.GET,requestEntity, String.class);
 
         return  new HttpEntity<String>(headers);
+    }
+    public void getTeamDetailBySerieAndTeamId(Long serieId, Long teamId) {
+        String url = "https://api.pandascore.co/lol/series/" + serieId + "/teams/" + teamId + "/stats";
+
+        ResponseEntity<TeamsDetailDto> response = null;
+        try {
+            response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), TeamsDetailDto.class);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return;
+        }
+        save.TeamDetailSave(response.getBody());
+        log.info("TeamDetailList is saved");
     }
     public void getTeamListBySerie(Long serieId){
         String url = "https://api.pandascore.co/lol/series/"+ serieId +"/teams";
@@ -59,6 +73,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
 
             for (int i = 0; i < response.getBody().length; i++) {
                 save.TeamSave(response.getBody()[i]);
+                getTeamDetailBySerieAndTeamId(serieId, response.getBody()[i].getId());
             }
             page++;
 

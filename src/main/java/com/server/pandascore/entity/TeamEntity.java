@@ -1,6 +1,7 @@
 package com.server.pandascore.entity;
 
 import com.server.pandascore.dto.gameDto.sub.player.PlayerDetails;
+import com.server.pandascore.dto.teamsDetailDto.sub.Status;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,14 @@ public class TeamEntity {
     @Type(type = "json")
     @Column(name = "players", columnDefinition = "json")
     private List<PlayerDetails> players;
+
+    @Type(type = "json")
+    @Column(name = "status", columnDefinition = "json")
+    private Status status;
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public TeamEntity(Long id, String acronym, String image_url, String location, String name, List<PlayerDetails> players) {
         this.id = id;
