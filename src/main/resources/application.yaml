@@ -38,6 +38,7 @@ spring:
 token:
   slack: ${localkey.slack-api.token}
   pandascore: ${localkey.pandascore-api.key}
+  youtube: ${localkey.youtube-api.key}
 
 ---
 
@@ -57,3 +58,4 @@ spring:
 token:
     slack: ${lof.slack.token}
     pandascore: ${lof.pandascore.key}
+    youtube: ${lof.youtube.key}

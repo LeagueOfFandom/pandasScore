@@ -1,5 +1,6 @@
 package com.server.pandascore.entity.video;
 
+import com.server.pandascore.dto.videoDto.YouTubeDto;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 
@@ -45,4 +46,15 @@ public class VideoEntity {
 
     @Column(name="video_dislike_count")
     private Long videoDislikeCount;
+
+    //dto to entity
+    public VideoEntity(YouTubeDto youTubeDto){
+        this.videoResourceId = youTubeDto.getResourceId();
+        this.videoTitle = youTubeDto.getTitle();
+        this.videoDescription = youTubeDto.getDescription();
+        this.videoThumbnail = youTubeDto.getThumbnail();
+        this.videoPublishedAt = youTubeDto.getPublishedAt();
+        this.videoChannelId = youTubeDto.getChannelId();
+        this.videoChannelTitle = youTubeDto.getChannelTitle();
+    }
 }
