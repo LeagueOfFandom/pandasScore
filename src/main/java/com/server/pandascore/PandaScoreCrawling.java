@@ -7,6 +7,7 @@ import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.properties.Tokens;
+import com.server.pandascore.service.YouTubeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -18,18 +19,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class PandaScoreCrawling implements ApplicationRunner {
     private final Tokens tokens;
     private final Save save;
+    private final YouTubeService youTubeService;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
         getChampionList();
         getTeamListBySerie(4763L);
-        getMatchListByLeagueId(293L);
+        youTubeService.getYouTubeList();
+        //getMatchListByLeagueId(293L);
     }
 
     public HttpEntity<String> setHeaders() {
