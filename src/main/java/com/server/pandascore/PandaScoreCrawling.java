@@ -169,6 +169,8 @@ public class PandaScoreCrawling implements ApplicationRunner {
                 return;
             }
 
+            for (int i = 0; i < response.getBody().length; i++)
+                save.LeagueSave(response.getBody()[i]);
             page++;
         }while (response.getBody().length == pageSize);
         log.info("ChampionList is saved");

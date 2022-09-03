@@ -2,6 +2,7 @@ package com.server.pandascore.dto.leagueDto;
 
 import com.server.pandascore.dto.leagueDto.sub.Series;
 import com.server.pandascore.dto.leagueDto.sub.VideoGame;
+import com.server.pandascore.entity.LeagueEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -17,4 +18,8 @@ public class LeagueListDto {
     private String slug;
     private String url;
     private VideoGame videogame;
+
+    public LeagueEntity toEntity(){
+        return new LeagueEntity(id,image_url,modified_at,name,series,slug,url,videogame);
+    }
 }
