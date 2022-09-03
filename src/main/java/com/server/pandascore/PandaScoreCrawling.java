@@ -2,6 +2,7 @@ package com.server.pandascore;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
+import com.server.pandascore.dto.leagueDto.LeagueListDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
@@ -27,9 +28,12 @@ public class PandaScoreCrawling implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
-        getChampionList();
-        getTeamListBySerie(4763L);
-        getMatchListByLeagueId(293L);
+
+        //getChampionList();
+        //getTeamListBySerie(4763L);
+        //getMatchListByLeagueId(293L);
+
+        getLeagueList();
     }
 
     public HttpEntity<String> setHeaders() {
@@ -151,6 +155,24 @@ public class PandaScoreCrawling implements ApplicationRunner {
         log.info("ChampionList is saved");
     }
 
+    public void getLeagueList(){
+        String url = "https://api.pandascore.co/lol/leagues";
+        ResponseEntity<LeagueListDto[]> response = null;
+
+        final int pageSize = 100;
+        int page = 1;
+        do {
+            try {
+                response = new RestTemplate().exchange(url + "?page[size]=" + pageSize + "&page[number]=" + page, HttpMethod.GET, setHeaders(), LeagueListDto[].class);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return;
+            }
+
+            page++;
+        }while (response.getBody().length == pageSize);
+        log.info("ChampionList is saved");
+    }
 
 }
 
