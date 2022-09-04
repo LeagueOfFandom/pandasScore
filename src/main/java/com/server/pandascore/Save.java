@@ -2,18 +2,13 @@ package com.server.pandascore;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
+import com.server.pandascore.dto.leagueDto.LeagueListDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
-import com.server.pandascore.entity.ChampionEntity;
-import com.server.pandascore.entity.MatchDetailEntity;
-import com.server.pandascore.entity.MatchEntity;
-import com.server.pandascore.entity.TeamEntity;
-import com.server.pandascore.repository.ChampionRepository;
-import com.server.pandascore.repository.MatchDetailRepository;
-import com.server.pandascore.repository.MatchRepository;
-import com.server.pandascore.repository.TeamRepository;
+import com.server.pandascore.entity.*;
+import com.server.pandascore.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +24,8 @@ public class Save {
     private final MatchDetailRepository matchDetailRepository;
 
     private final TeamRepository teamRepository;
+
+    private final LeagueRepository leagueRepository;
 
 
     public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
@@ -75,6 +72,15 @@ public class Save {
 
             matchRepository.save(matchDto.toEntity());
             //slack 알람 추가 필요.
+        }
+    }
+
+    public void LeagueSave(LeagueListDto leagueListDto){
+        Long id = leagueListDto.getId();
+        LeagueEntity leagueEntity = leagueRepository.findById(id).orElse(null);
+
+        if(leagueEntity == null){
+            leagueRepository.save(leagueListDto.toEntity());
         }
     }
 }
