@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -35,6 +37,14 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //getMatchListByLeagueId(293L);
 
         getLeagueList();
+        getAllTeamList();
+    }
+
+    public void getAllTeamList(){
+        List<Long> seriesIdList = save.getAllLatestSeriesIdList();
+        for(Long seriesId : seriesIdList){
+            getTeamListBySeriesId(seriesId);
+        }
     }
 
 
@@ -50,7 +60,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         save.TeamDetailSave(response.getBody());
         log.info("TeamDetailList is saved");
     }
-    public void getTeamListBySeries(Long seriesId){
+    public void getTeamListBySeriesId(Long seriesId){
         ResponseEntity<TeamDto[]> response = null;
 
         final int pageSize = 100;
@@ -64,7 +74,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             }
 
             for (int i = 0; i < response.getBody().length; i++) {
-                save.TeamSave(response.getBody()[i]);
+                save.TeamSave(response.getBody()[i], seriesId);
                 getTeamDetailBySeriesAndTeamId(seriesId, response.getBody()[i].getId());
             }
             page++;

@@ -12,6 +12,8 @@ import com.server.pandascore.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class Save {
@@ -26,6 +28,12 @@ public class Save {
     private final TeamRepository teamRepository;
 
     private final LeagueRepository leagueRepository;
+
+    public List<Long> getAllLatestSeriesIdList(){
+        List<Long> seriesIdList = leagueRepository.findAllLatestSeriesId();
+        seriesIdList.remove(null);
+        return seriesIdList;
+    }
 
 
     public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
@@ -56,11 +64,11 @@ public class Save {
             //slack 알람 추가 필요.
         }
     }
-    public void TeamSave(TeamDto teamDto){
+    public void TeamSave(TeamDto teamDto, Long seriesId){
         Long id = teamDto.getId();
         TeamEntity teamEntity = teamRepository.findById(id).orElse(null);
         if(teamEntity == null){
-            teamRepository.save(teamDto.toTeamEntity());
+            teamRepository.save(teamDto.toTeamEntity(seriesId));
             //slack 알람 추가 필요.
         }
     }

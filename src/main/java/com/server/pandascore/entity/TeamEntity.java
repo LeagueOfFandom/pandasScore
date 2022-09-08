@@ -44,16 +44,21 @@ public class TeamEntity {
     @Column(name = "status", columnDefinition = "json")
     private Status status;
 
+    @Column(name = "series_id")
+    private Long series_id;
+
     public void setStatus(Status status) {
         this.status = status;
     }
 
-    public TeamEntity(Long id, String acronym, String image_url, String location, String name, List<PlayerDetails> players) {
+
+    public TeamEntity(Long id, String acronym, String image_url, String location, String name, List<PlayerDetails> players, Long series_id) {
         this.id = id;
         this.acronym = acronym;
         this.image_url = image_url;
         this.location = location;
         this.name = name;
         this.players = players;
+        this.series_id = series_id;
     }
 }
