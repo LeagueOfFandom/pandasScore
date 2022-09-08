@@ -3,10 +3,12 @@ package com.server.pandascore;
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.leagueDto.LeagueListDto;
+import com.server.pandascore.dto.leagueDto.sub.Series;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
+import com.server.pandascore.entity.LeagueEntity;
 import com.server.pandascore.properties.Tokens;
 import com.server.pandascore.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -36,7 +40,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //getMatchListByLeagueId(293L);
 
         //getLeagueList();
-        getTeamRankingList("lck", "summer", 2022L);
+        getTeamRankingList("lck", "Summer", 2022L);
     }
 
     public HttpEntity<String> setHeaders() {
@@ -181,9 +185,13 @@ public class PandaScoreCrawling implements ApplicationRunner {
 
     public void getTeamRankingList(String league, String season, Long year){
 
-        //get series_id with league, season, year
-        Long id = leagueRepository.findByLeagueName(league).getId();
-        log.info(id.toString());
+        //Season 첫 글자는 대문자
+        String fullName = season + " " + year.toString();
+        String newStr = "$["+leagueRepository.findSeries(league, fullName).replaceAll("[^0-9]", "")+"].id";
+        Long seriesId = leagueRepository.findSeriesId(league, newStr);
+        log.info(seriesId.toString());
+
+
         //String url = "https://api.pandascore.co/lol/series/{series_id}/teams/stats";
     }
 
