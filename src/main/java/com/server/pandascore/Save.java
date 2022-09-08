@@ -27,7 +27,7 @@ public class Save {
 
     private final LeagueRepository leagueRepository;
 
-    private final
+    private final TeamRankingRepository teamRankingRepository;
 
 
     public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
@@ -85,4 +85,5 @@ public class Save {
             leagueRepository.save(leagueListDto.toEntity());
         }
     }
+
 }

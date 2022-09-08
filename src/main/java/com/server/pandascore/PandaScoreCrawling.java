@@ -9,8 +9,10 @@ import com.server.pandascore.dto.statsDto.StatDto;
 import com.server.pandascore.dto.statsDto.sub.Total;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
+import com.server.pandascore.entity.TeamRankingEntity;
 import com.server.pandascore.properties.Tokens;
 import com.server.pandascore.repository.LeagueRepository;
+import com.server.pandascore.repository.TeamRankingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -29,6 +31,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
     private final Tokens tokens;
     private final Save save;
     private final LeagueRepository leagueRepository;
+    private final TeamRankingRepository teamRankingRepository;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
@@ -38,7 +41,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //getMatchListByLeagueId(293L);
 
         //getLeagueList();
-        getTeamRankingList("lck", "Summer", 2022L);
+        getTeamRankingList("lpl", "Summer", "2022");
     }
 
     public HttpEntity<String> setHeaders() {
@@ -181,7 +184,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         log.info("ChampionList is saved");
     }
 
-    public void getTeamRankingList(String league, String season, Long year){
+    public void getTeamRankingList(String league, String season, String year){
 
         //Season 첫 글자는 대문자
         String fullName = season + " " + year.toString();
@@ -193,8 +196,6 @@ public class PandaScoreCrawling implements ApplicationRunner {
         log.info(url);
 
         ResponseEntity<StatDto[]> response = null;
-        //final int pageSize = 100;
-        //int page = 1;
         try {
             response = new RestTemplate().exchange(url , HttpMethod.GET, setHeaders(), StatDto[].class);
             log.info(response.toString());
@@ -210,8 +211,9 @@ public class PandaScoreCrawling implements ApplicationRunner {
             String matchesWinRateStr = Long.toString(Math.round(matchesWinRate)) + "%";
             Double gamesWinRate = (double)totalStat.getGames_won()/(double)totalStat.getGames_played()*100;
             String gamesWinRateStr = Long.toString(Math.round(gamesWinRate)) + "%";
+            Long point = totalStat.getGames_won() - totalStat.getGames_lost();
 
-           
+            teamRankingRepository.save(new TeamRankingEntity(year, season, league, seriesId, response.getBody()[i].getAcronym(), totalStat, matchesWinRateStr, gamesWinRateStr, point));
         }
 
         log.info("getTeamRanking is saved");
