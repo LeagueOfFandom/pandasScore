@@ -8,6 +8,7 @@ import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.properties.Tokens;
+import com.server.pandascore.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 public class PandaScoreCrawling implements ApplicationRunner {
     private final Tokens tokens;
     private final Save save;
+    private final LeagueRepository leagueRepository;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
@@ -33,7 +35,8 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //getTeamListBySerie(4763L);
         //getMatchListByLeagueId(293L);
 
-        getLeagueList();
+        //getLeagueList();
+        getTeamRankingList("lck", "summer", 2022L);
     }
 
     public HttpEntity<String> setHeaders() {
@@ -174,6 +177,14 @@ public class PandaScoreCrawling implements ApplicationRunner {
             page++;
         }while (response.getBody().length == pageSize);
         log.info("ChampionList is saved");
+    }
+
+    public void getTeamRankingList(String league, String season, Long year){
+
+        //get series_id with league, season, year
+        Long id = leagueRepository.findByLeagueName(league).getId();
+        log.info(id.toString());
+        //String url = "https://api.pandascore.co/lol/series/{series_id}/teams/stats";
     }
 
 }
