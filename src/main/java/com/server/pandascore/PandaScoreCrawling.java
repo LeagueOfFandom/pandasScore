@@ -3,12 +3,12 @@ package com.server.pandascore;
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.leagueDto.LeagueListDto;
-import com.server.pandascore.dto.leagueDto.sub.Series;
 import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
+import com.server.pandascore.dto.statsDto.StatDto;
+import com.server.pandascore.dto.statsDto.sub.Total;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
-import com.server.pandascore.entity.LeagueEntity;
 import com.server.pandascore.properties.Tokens;
 import com.server.pandascore.repository.LeagueRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -191,8 +189,32 @@ public class PandaScoreCrawling implements ApplicationRunner {
         Long seriesId = leagueRepository.findSeriesId(league, newStr);
         log.info(seriesId.toString());
 
+        String url = "https://api.pandascore.co/lol/series/"+seriesId.toString()+"/teams/stats";
+        log.info(url);
 
-        //String url = "https://api.pandascore.co/lol/series/{series_id}/teams/stats";
+        ResponseEntity<StatDto[]> response = null;
+        //final int pageSize = 100;
+        //int page = 1;
+        try {
+            response = new RestTemplate().exchange(url , HttpMethod.GET, setHeaders(), StatDto[].class);
+            log.info(response.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return;
+        }
+
+        for (int i = 0; i < response.getBody().length; i++) {
+            log.info(response.getBody()[i].getAcronym());
+            Total totalStat = response.getBody()[i].getStats().getTotals();
+            Double matchesWinRate = (double)totalStat.getMatches_won()/(double)totalStat.getMatches_played()*100;
+            String matchesWinRateStr = Long.toString(Math.round(matchesWinRate)) + "%";
+            Double gamesWinRate = (double)totalStat.getGames_won()/(double)totalStat.getGames_played()*100;
+            String gamesWinRateStr = Long.toString(Math.round(gamesWinRate)) + "%";
+
+           
+        }
+
+        log.info("getTeamRanking is saved");
     }
 
 }
