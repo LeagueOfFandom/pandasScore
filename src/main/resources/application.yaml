@@ -34,6 +34,9 @@ spring:
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
+  sql:
+    data: classpath:data.sql
+    initialization-mode: always
 
 token:
   slack: ${localkey.slack-api.token}
@@ -50,10 +53,13 @@ spring:
     username: root
     password: ${lof.mariadb.password}
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     defer-datasource-initialization: true
+  sql:
+    data: classpath:data.sql
+    initialization-mode: always
 token:
     slack: ${lof.slack.token}
     pandascore: ${lof.pandascore.key}
