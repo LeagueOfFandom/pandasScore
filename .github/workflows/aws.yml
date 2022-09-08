@@ -2,7 +2,7 @@ name: aws CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 env:
   S3_BUCKET_NAME: lof-crawling-deploy
