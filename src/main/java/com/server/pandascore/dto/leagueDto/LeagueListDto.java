@@ -20,6 +20,9 @@ public class LeagueListDto {
     private VideoGame videogame;
 
     public LeagueEntity toEntity(){
-        return new LeagueEntity(id,image_url,modified_at,name,series,slug,url,videogame);
+        if(series.size() == 0){
+            return new LeagueEntity(id, image_url, modified_at, name, series, slug, url, videogame, null);
+        }
+        return new LeagueEntity(id,image_url,modified_at,name,series,slug,url,videogame,series.get(series.size() - 1).getId());
     }
 }
