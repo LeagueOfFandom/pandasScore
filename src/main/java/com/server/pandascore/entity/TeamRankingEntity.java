@@ -17,7 +17,8 @@ import javax.persistence.*;
 @Table(name = "team_ranking")
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class TeamRankingEntity {
-    @javax.persistence.Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long TeamRankingId;
@@ -34,8 +35,8 @@ public class TeamRankingEntity {
     @Column(name = "series_id")
     private Long seriesId;
 
-    @Column(name = "rank")
-    private Long rank;
+//    @Column(name = "rank")
+//    private Long rank;
 
     @Column(name = "team_name")
     private String teamName;
@@ -50,17 +51,18 @@ public class TeamRankingEntity {
     @Column(name="games_win_rate")
     private String gamesWinRate;
 
+    @Column(name="points")
+    private Long points;
 
-    public TeamRankingEntity(String year, String season, String league, Long SeriesId, Long rank, String teamName, Total total, String matchesWinRate, String gamesWinRate){
+    public TeamRankingEntity(String year, String season, String league, Long SeriesId, String teamName, Total total, String matchesWinRate, String gamesWinRate, Long points){
         this.year = year;
         this.season = season;
         this.league = league;
         this.seriesId = SeriesId;
-        this.rank = rank;
         this.teamName = teamName;
         this.total = total;
         this.matchesWinRate = matchesWinRate;
         this.gamesWinRate = gamesWinRate;
-
+        this.points = points;
     }
 }
