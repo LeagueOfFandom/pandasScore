@@ -23,8 +23,9 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @RequiredArgsConstructor
 public class PandaScoreCrawling implements ApplicationRunner {
-    private final Tokens tokens;
+
     private final Save save;
+    private final PandaScoreApi pandaScoreApi;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("PandaScoreCrawling is running");
@@ -36,21 +37,12 @@ public class PandaScoreCrawling implements ApplicationRunner {
         getLeagueList();
     }
 
-    public HttpEntity<String> setHeaders() {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", tokens.getPandascore());
-        log.info(tokens.getPandascore());
-        //ResponseEntity<String> response = restTemplate.exchange("https://api.pandascore.co/lol/leagues", HttpMethod.GET,requestEntity, String.class);
-
-        return  new HttpEntity<String>(headers);
-    }
-    public void getTeamDetailBySerieAndTeamId(Long serieId, Long teamId) {
-        String url = "https://api.pandascore.co/lol/series/" + serieId + "/teams/" + teamId + "/stats";
+    public void getTeamDetailBySeriesAndTeamId(Long seriesId, Long teamId) {
 
         ResponseEntity<TeamsDetailDto> response = null;
         try {
-            response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), TeamsDetailDto.class);
+            response = pandaScoreApi.getTeamDetailBySeriesAndTeamId(seriesId, teamId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return;
@@ -58,18 +50,14 @@ public class PandaScoreCrawling implements ApplicationRunner {
         save.TeamDetailSave(response.getBody());
         log.info("TeamDetailList is saved");
     }
-    public void getTeamListBySerie(Long serieId){
-        String url = "https://api.pandascore.co/lol/series/"+ serieId +"/teams";
-
+    public void getTeamListBySeries(Long seriesId){
         ResponseEntity<TeamDto[]> response = null;
 
         final int pageSize = 100;
         int page = 1;
         do {
             try {
-
-                response = new RestTemplate().exchange(url + "?page[size]=" + pageSize + "&page[number]=" + page, HttpMethod.GET, setHeaders(), TeamDto[].class);
-
+                response = pandaScoreApi.getTeamBySeriesId(seriesId);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
@@ -77,22 +65,17 @@ public class PandaScoreCrawling implements ApplicationRunner {
 
             for (int i = 0; i < response.getBody().length; i++) {
                 save.TeamSave(response.getBody()[i]);
-                getTeamDetailBySerieAndTeamId(serieId, response.getBody()[i].getId());
+                getTeamDetailBySeriesAndTeamId(seriesId, response.getBody()[i].getId());
             }
             page++;
 
         }while (response.getBody().length == pageSize);
         log.info("TeamList is saved");
     }
-    public void getMatchDetailByGameId(Long gameId){
-        String url = "https://api.pandascore.co/lol/games/" + gameId;
-
+    public void getMatchDetailByMatchId(Long matchId){
         ResponseEntity<GameDto> response = null;
-
         try {
-
-            response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), GameDto.class);
-
+            response = pandaScoreApi.getGameByMatchId(matchId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return;
@@ -102,7 +85,6 @@ public class PandaScoreCrawling implements ApplicationRunner {
     }
 
     public void getMatchListByLeagueId(Long leagueId) {
-        String url = "https://api.pandascore.co/lol/matches?filter[league_id]=" + leagueId;
 
         ResponseEntity<MatchDto[]> response = null;
 
@@ -110,9 +92,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         int page = 1;
         do {
             try {
-
-                response = new RestTemplate().exchange(url + "&page[size]=" + pageSize + "&page[number]=" + page, HttpMethod.GET, setHeaders(), MatchDto[].class);
-
+                response = pandaScoreApi.getMatchListByLeagueIdAndPageSizeAndPage(leagueId, pageSize, page);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
@@ -122,7 +102,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
                 save.MatchSave(response.getBody()[i]);
                 for(Game game : response.getBody()[i].getGames()){
                     Long gameId = game.getId();
-                    getMatchDetailByGameId(gameId);
+                    getMatchDetailByMatchId(gameId);
                 }
             }
             page++;
@@ -132,7 +112,6 @@ public class PandaScoreCrawling implements ApplicationRunner {
     }
 
     public void getChampionList(){
-        String url = "https://api.pandascore.co/lol/champions";
 
         ResponseEntity<ChampionDto[]> response = null;
 
@@ -140,7 +119,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
         int page = 1;
         do {
             try {
-                response = new RestTemplate().exchange(url + "?page[size]=" + pageSize + "&page[number]=" + page, HttpMethod.GET, setHeaders(), ChampionDto[].class);
+                response = pandaScoreApi.getChampionListByPageSizeAndPage(pageSize, page);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
@@ -156,24 +135,23 @@ public class PandaScoreCrawling implements ApplicationRunner {
     }
 
     public void getLeagueList(){
-        String url = "https://api.pandascore.co/lol/leagues";
+
         ResponseEntity<LeagueListDto[]> response = null;
 
         final int pageSize = 100;
         int page = 1;
         do {
             try {
-                response = new RestTemplate().exchange(url + "?page[size]=" + pageSize + "&page[number]=" + page, HttpMethod.GET, setHeaders(), LeagueListDto[].class);
+                response = pandaScoreApi.getLeagueListByPageSizeAndPage(100, page);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
             }
-
             for (int i = 0; i < response.getBody().length; i++)
                 save.LeagueSave(response.getBody()[i]);
             page++;
         }while (response.getBody().length == pageSize);
-        log.info("ChampionList is saved");
+        log.info("LeagueList is saved");
     }
 
 }
