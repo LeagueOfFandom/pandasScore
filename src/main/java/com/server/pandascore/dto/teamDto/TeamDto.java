@@ -15,7 +15,7 @@ public class TeamDto {
     private String name;
     private List<PlayerDetails> players;
 
-    public TeamEntity toTeamEntity(){
-        return new TeamEntity(id, acronym, image_url, location, name, players);
+    public TeamEntity toTeamEntity(Long series_id){
+        return new TeamEntity(id, acronym, image_url, location, name, players, series_id);
     }
 }

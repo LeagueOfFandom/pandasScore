@@ -14,4 +14,6 @@ public interface LeagueRepository extends JpaRepository<LeagueEntity, Long> {
     @Query(value = "select json_value(series, ?2) from league where name = ?1", nativeQuery = true)
     Long findSeriesId(String name, String Id);
 
+    @Query("select l.latest_series_id from LeagueEntity l")
+    List<Long> findAllLatestSeriesId();
 }
