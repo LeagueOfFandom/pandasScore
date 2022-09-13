@@ -29,12 +29,13 @@ public class Save {
 
     private final LeagueRepository leagueRepository;
 
+    private final TeamRankingRepository teamRankingRepository;
+    
     public List<Long> getAllLatestSeriesIdList(){
         List<Long> seriesIdList = leagueRepository.findAllLatestSeriesId();
         seriesIdList.remove(null);
         return seriesIdList;
     }
-
 
     public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
         Long teamId = teamsDetailDto.getId();
@@ -91,4 +92,5 @@ public class Save {
             leagueRepository.save(leagueListDto.toEntity());
         }
     }
+
 }
