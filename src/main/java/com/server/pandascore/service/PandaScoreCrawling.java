@@ -1,4 +1,4 @@
-package com.server.pandascore;
+package com.server.pandascore.service;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PandaScoreCrawling implements ApplicationRunner {
 
-    private final Save save;
+    private final PandaScoreSave pandaScoreSave;
     private final PandaScoreApi pandaScoreApi;
 
     @Override
@@ -36,7 +36,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
     }
 
     public void getAllTeamList(){
-        List<Long> seriesIdList = save.getAllLatestSeriesIdList();
+        List<Long> seriesIdList = pandaScoreSave.getAllLatestSeriesIdList();
         for(Long seriesId : seriesIdList){
             getTeamListBySeriesId(seriesId);
         }
@@ -52,7 +52,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             log.error(e.getMessage());
             return;
         }
-        save.TeamDetailSave(response.getBody());
+        pandaScoreSave.TeamDetailSave(response.getBody());
         log.info("TeamDetailList is saved");
     }
     public void getTeamListBySeriesId(Long seriesId){
@@ -69,7 +69,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             }
 
             for (int i = 0; i < response.getBody().length; i++) {
-                save.TeamSave(response.getBody()[i], seriesId);
+                pandaScoreSave.TeamSave(response.getBody()[i], seriesId);
                 getTeamDetailBySeriesAndTeamId(seriesId, response.getBody()[i].getId());
             }
             page++;
@@ -85,7 +85,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             log.error(e.getMessage());
             return;
         }
-        save.MatchDetailSave(response.getBody());
+        pandaScoreSave.MatchDetailSave(response.getBody());
         log.info("MatchDetail is saved");
     }
 
@@ -104,7 +104,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             }
 
             for (int i = 0; i < response.getBody().length; i++) {
-                save.MatchSave(response.getBody()[i]);
+                pandaScoreSave.MatchSave(response.getBody()[i]);
                 for(Game game : response.getBody()[i].getGames()){
                     Long gameId = game.getId();
                     getMatchDetailByMatchId(gameId);
@@ -131,7 +131,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
             }
 
             for (int i = 0; i < response.getBody().length; i++)
-                save.ChampionSave(response.getBody()[i]);
+                pandaScoreSave.ChampionSave(response.getBody()[i]);
 
             page++;
 
@@ -153,7 +153,7 @@ public class PandaScoreCrawling implements ApplicationRunner {
                 return;
             }
             for (int i = 0; i < response.getBody().length; i++)
-                save.LeagueSave(response.getBody()[i]);
+                pandaScoreSave.LeagueSave(response.getBody()[i]);
             page++;
         }while (response.getBody().length == pageSize);
         log.info("LeagueList is saved");

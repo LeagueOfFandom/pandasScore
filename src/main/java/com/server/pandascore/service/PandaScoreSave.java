@@ -1,10 +1,9 @@
-package com.server.pandascore;
+package com.server.pandascore.service;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.leagueDto.LeagueListDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
-import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.entity.*;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class Save {
+public class PandaScoreSave {
 
     private String cloudFrontUrl = "https://d654rq93y7j8z.cloudfront.net";
     private final ChampionRepository championRepository;
