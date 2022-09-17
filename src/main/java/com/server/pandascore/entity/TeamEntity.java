@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,6 +18,9 @@ import java.util.List;
 @TypeDef(name = "json", typeClass = JsonStringType.class)
 public class TeamEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pk")
+    private Long pk;
     @Column(name = "id")
     private Long id;
 
@@ -28,7 +28,7 @@ public class TeamEntity {
     private String acronym;
 
     @Column(name = "image_url")
-    private String image_url;
+    private String imageUrl;
 
     @Column(name = "location")
     private String location;
@@ -45,20 +45,20 @@ public class TeamEntity {
     private Status status;
 
     @Column(name = "series_id")
-    private Long series_id;
+    private Long seriesId;
 
     public void setStatus(Status status) {
         this.status = status;
     }
 
 
-    public TeamEntity(Long id, String acronym, String image_url, String location, String name, List<PlayerDetails> players, Long series_id) {
+    public TeamEntity(Long id, String acronym, String imageUrl, String location, String name, List<PlayerDetails> players, Long seriesId) {
         this.id = id;
         this.acronym = acronym;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
         this.location = location;
         this.name = name;
         this.players = players;
-        this.series_id = series_id;
+        this.seriesId = seriesId;
     }
 }

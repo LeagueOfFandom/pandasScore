@@ -27,7 +27,6 @@ public class PandaScoreApi {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", tokens.getPandascore());
-        log.info(tokens.getPandascore());
 
         return  new HttpEntity<String>(headers);
     }

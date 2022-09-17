@@ -27,8 +27,6 @@ public class PandaScoreSave {
     private final TeamRepository teamRepository;
 
     private final LeagueRepository leagueRepository;
-
-    private final TeamRankingRepository teamRankingRepository;
     
     public List<Long> getAllLatestSeriesIdList(){
         List<Long> seriesIdList = leagueRepository.findAllLatestSeriesId();
@@ -66,10 +64,9 @@ public class PandaScoreSave {
     }
     public void TeamSave(TeamDto teamDto, Long seriesId){
         Long id = teamDto.getId();
-        TeamEntity teamEntity = teamRepository.findById(id).orElse(null);
-        if(teamEntity == null){
+        TeamEntity teamEntity = teamRepository.findByIdAndSeriesId(id, seriesId);
+        if(teamEntity == null) {
             teamRepository.save(teamDto.toTeamEntity(seriesId));
-            //slack 알람 추가 필요.
         }
     }
 
