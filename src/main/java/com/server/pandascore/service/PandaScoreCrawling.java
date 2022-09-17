@@ -33,6 +33,14 @@ public class PandaScoreCrawling implements ApplicationRunner {
         //getMatchListByLeagueId(293L);
         getLeagueList();
         getAllTeamList();
+        getAllMatchList();
+    }
+
+    public void getAllMatchList(){
+        List<Long> leagueIdList = pandaScoreSave.getAllLeagueIdList();
+        leagueIdList.forEach(leagueId -> {
+            getMatchListByLeagueId(leagueId);
+        });
     }
 
     public void getAllTeamList(){

@@ -27,7 +27,11 @@ public class PandaScoreSave {
     private final TeamRepository teamRepository;
 
     private final LeagueRepository leagueRepository;
-    
+
+    public List<Long> getAllLeagueIdList(){
+        return leagueRepository.findAllId();
+    }
+
     public List<Long> getAllLatestSeriesIdList(){
         List<Long> seriesIdList = leagueRepository.findAllLatestSeriesId();
         seriesIdList.remove(null);

@@ -64,20 +64,20 @@ public class PandaScoreApi {
         try {
             response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), MatchDto[].class);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage() + leagueId);
             return null;
         }
         return response;
     }
 
     public ResponseEntity<GameDto> getGameByMatchId(Long matchId) {
-        String url = "https://api.pandascore.co/lol/matches/" + matchId;
+        String url = "https://api.pandascore.co/lol/games/" + matchId;
 
         ResponseEntity<GameDto> response = null;
         try {
             response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), GameDto.class);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage() + matchId);
             return null;
         }
         return response;

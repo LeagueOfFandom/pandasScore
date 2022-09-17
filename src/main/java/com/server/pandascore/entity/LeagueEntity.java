@@ -39,7 +39,7 @@ public class LeagueEntity {
     private List<Series> series;
 
     @Column(name = "latest_series_id")
-    private Long latest_series_id;
+    private Long latestSeriesId;
     @Column(name = "slug")
     private String slug;
 
@@ -50,7 +50,7 @@ public class LeagueEntity {
     @Column(name = "videogame", columnDefinition = "json")
     private VideoGame videogame;
 
-    public LeagueEntity(Long id, String image_url, LocalDateTime modified_at, String name, List<Series> series, String slug, String url, VideoGame videogame, Long latest_series_id) {
+    public LeagueEntity(Long id, String image_url, LocalDateTime modified_at, String name, List<Series> series, String slug, String url, VideoGame videogame, Long latestSeriesId) {
         this.id = id;
         this.image_url = image_url;
         this.modified_at = modified_at;
@@ -59,6 +59,6 @@ public class LeagueEntity {
         this.slug = slug;
         this.url = url;
         this.videogame = videogame;
-        this.latest_series_id = latest_series_id;
+        this.latestSeriesId = latestSeriesId;
     }
 }
