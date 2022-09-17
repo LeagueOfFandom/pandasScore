@@ -1,4 +1,4 @@
-package com.server.pandascore;
+package com.server.pandascore.service;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
@@ -27,7 +27,6 @@ public class PandaScoreApi {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", tokens.getPandascore());
-        log.info(tokens.getPandascore());
 
         return  new HttpEntity<String>(headers);
     }

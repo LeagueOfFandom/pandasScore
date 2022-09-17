@@ -1,10 +1,9 @@
-package com.server.pandascore;
+package com.server.pandascore.service;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.leagueDto.LeagueListDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
-import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.entity.*;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class Save {
+public class PandaScoreSave {
 
     private String cloudFrontUrl = "https://d654rq93y7j8z.cloudfront.net";
     private final ChampionRepository championRepository;
@@ -28,8 +27,6 @@ public class Save {
     private final TeamRepository teamRepository;
 
     private final LeagueRepository leagueRepository;
-
-    private final TeamRankingRepository teamRankingRepository;
     
     public List<Long> getAllLatestSeriesIdList(){
         List<Long> seriesIdList = leagueRepository.findAllLatestSeriesId();
@@ -67,10 +64,9 @@ public class Save {
     }
     public void TeamSave(TeamDto teamDto, Long seriesId){
         Long id = teamDto.getId();
-        TeamEntity teamEntity = teamRepository.findById(id).orElse(null);
-        if(teamEntity == null){
+        TeamEntity teamEntity = teamRepository.findByIdAndSeriesId(id, seriesId);
+        if(teamEntity == null) {
             teamRepository.save(teamDto.toTeamEntity(seriesId));
-            //slack 알람 추가 필요.
         }
     }
 
