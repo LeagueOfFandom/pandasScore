@@ -19,22 +19,9 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PandaScoreCrawling implements ApplicationRunner {
-
+public class PandaScoreCrawling {
     private final PandaScoreSave pandaScoreSave;
     private final PandaScoreApi pandaScoreApi;
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.println("PandaScoreCrawling is running");
-
-        //getChampionList();
-        //getTeamListBySerie(4763L);
-        //getMatchListByLeagueId(293L);
-        getLeagueList();
-        getAllTeamList();
-        getAllMatchList();
-    }
 
     public void getAllMatchList(){
         List<Long> leagueIdList = pandaScoreSave.getAllLeagueIdList();
