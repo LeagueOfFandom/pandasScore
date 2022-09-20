@@ -21,4 +21,20 @@ public class PandaScoreController {
         pandaScoreCrawling.getLeagueList();
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/setAllMatch")
+    public ResponseEntity<?> setAllMatch(){
+        pandaScoreCrawling.getAllMatchList();
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/setAllTeam")
+    public ResponseEntity<?> setAllTeam(){
+        pandaScoreCrawling.getAllTeamList();
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/setAllChampion")
+    public ResponseEntity<?> setAllChampion(){
+        pandaScoreCrawling.getChampionList();
+        return ResponseEntity.ok().build();
+    }
 }
