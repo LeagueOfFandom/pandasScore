@@ -1,4 +1,4 @@
-package com.server.pandascore.service;
+package com.server.pandascore.service.pandaScore;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
@@ -9,8 +9,6 @@ import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

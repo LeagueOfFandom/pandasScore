@@ -1,4 +1,4 @@
-package com.server.pandascore.service;
+package com.server.pandascore.service.pandaScore;
 
 import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;

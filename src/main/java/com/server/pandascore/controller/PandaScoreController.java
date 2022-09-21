@@ -1,7 +1,7 @@
 package com.server.pandascore.controller;
 
 
-import com.server.pandascore.service.PandaScoreCrawling;
+import com.server.pandascore.service.pandaScore.PandaScoreCrawling;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
