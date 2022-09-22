@@ -23,7 +23,24 @@ public class PandaScoreApi {
 
     private final Tokens tokens;
 
+    private Long currentMillis = System.currentTimeMillis();
+    private Long limitMillis = 500L;
+
+    private void checkTime() {
+
+        if (System.currentTimeMillis() - currentMillis > limitMillis) {
+            currentMillis = System.currentTimeMillis();
+        } else {
+            try {
+                Thread.sleep(limitMillis - (System.currentTimeMillis() - currentMillis));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public HttpEntity<String> setHeaders() {
+        checkTime();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", tokens.getPandascore());
