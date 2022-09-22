@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class SlackNotifyService {
 
-    @Value("${slack.token}")
+    @Value("${token.slack}")
     String token;
     @Value("${spring.profiles.active}")
     String springProfile;

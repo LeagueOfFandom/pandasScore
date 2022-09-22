@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -19,32 +20,35 @@ public class PandaScoreController {
     private final PandaScoreCrawling pandaScoreCrawling;
 
     @PostMapping("/setAllLeague")
-    public ResponseEntity<?> setAllLeague(){
+    public void setAllLeague(){
         slackNotifyService.sendMessage("setAllLeague start");
         pandaScoreCrawling.getLeagueList();
         slackNotifyService.sendMessage("setAllLeague end");
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/setAllMatch")
-    public ResponseEntity<?> setAllMatch(){
+    public void setAllMatch(){
         slackNotifyService.sendMessage("setAllMatch start");
         pandaScoreCrawling.getAllMatchList();
         slackNotifyService.sendMessage("setAllMatch end");
-        return ResponseEntity.ok().build();
     }
     @PostMapping("/setAllTeam")
-    public ResponseEntity<?> setAllTeam(){
+    public void setAllTeam(){
         slackNotifyService.sendMessage("setAllTeam start");
         pandaScoreCrawling.getAllTeamList();
         slackNotifyService.sendMessage("setAllTeam end");
-        return ResponseEntity.ok().build();
     }
     @PostMapping("/setAllChampion")
-    public ResponseEntity<?> setAllChampion(){
+    public void setAllChampion(){
         slackNotifyService.sendMessage("setAllChampion start");
         pandaScoreCrawling.getChampionList();
         slackNotifyService.sendMessage("setAllChampion end");
-        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/setAllMatchByLeagueId")
+    public void setAllMatchByLeagueId(@RequestParam(value = "leagueId") Long leagueId){
+        slackNotifyService.sendMessage("setAllMatchByLeagueId start");
+        pandaScoreCrawling.getMatchListByLeagueId(leagueId);
+        slackNotifyService.sendMessage("setAllMatchByLeagueId end");
     }
 }

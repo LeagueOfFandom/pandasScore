@@ -30,22 +30,22 @@ public class MatchEntity {
     private Tournament tournament;
 
     @Column(name = "league_id")
-    private Long league_id;
+    private Long leagueId;
 
     @Column(name = "original_schedule_at")
-    private LocalDateTime original_scheduled_at;
+    private LocalDateTime originalScheduledAt;
 
     @Column(name = "begin_at")
-    private LocalDateTime begin_at;
+    private LocalDateTime beginAt;
 
     @Column(name = "winner_id")
-    private Long winner_id;
+    private Long winnerId;
 
     @Column(name = "status")
     private String status;
 
     @Column(name = "end_at")
-    private LocalDateTime end_at;
+    private LocalDateTime endAt;
 
     @Type(type = "json")
     @Column(name = "live", columnDefinition = "json")
@@ -61,25 +61,25 @@ public class MatchEntity {
 
     @Type(type = "json")
     @Column(name = "streams_list", columnDefinition = "json")
-    private List<Stream> streams_list;
+    private List<Stream> streamsList;
 
     @Type(type = "json")
     @Column(name = "opponents", columnDefinition = "json")
     private List<Opponents> opponents;
 
-    public MatchEntity(Long id, Tournament tournament, Long league_id, LocalDateTime original_scheduled_at, LocalDateTime begin_at, Long winner_id, String status, LocalDateTime end_at, Live live, List<Result> results, List<Game> games, List<Stream> streams_list, List<Opponents> opponents) {
+    public MatchEntity(Long id, Tournament tournament, Long leagueId, LocalDateTime originalScheduledAt, LocalDateTime beginAt, Long winnerId, String status, LocalDateTime endAt, Live live, List<Result> results, List<Game> games, List<Stream> streamsList, List<Opponents> opponents) {
         this.id = id;
         this.tournament = tournament;
-        this.league_id = league_id;
-        this.original_scheduled_at = original_scheduled_at;
-        this.begin_at = begin_at;
-        this.winner_id = winner_id;
+        this.leagueId = leagueId;
+        this.originalScheduledAt = originalScheduledAt;
+        this.beginAt = beginAt;
+        this.winnerId = winnerId;
         this.status = status;
-        this.end_at = end_at;
+        this.endAt = endAt;
         this.live = live;
         this.results = results;
         this.games = games;
-        this.streams_list = streams_list;
+        this.streamsList = streamsList;
         this.opponents = opponents;
     }
 }
