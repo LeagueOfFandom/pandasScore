@@ -15,8 +15,7 @@ spring:
       continue-on-error: true
       mode: always
 
-server:
-  port: 8080
+
 
 ---
 
@@ -42,6 +41,9 @@ token:
   slack: ${localkey.slack-api.token}
   pandascore: ${localkey.pandascore-api.key}
 
+server:
+  port: 8080
+
 ---
 
 spring:
@@ -63,3 +65,6 @@ spring:
 token:
     slack: ${lof.slack.token}
     pandascore: ${lof.pandascore.key}
+
+server:
+  port: 80
