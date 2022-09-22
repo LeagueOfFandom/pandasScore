@@ -62,6 +62,7 @@ public class PandaScoreApi {
                 Long start = System.currentTimeMillis();
                 response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), LeagueListDto[].class);
                 log.info("getLeagueListByPageSizeAndPage : " + (System.currentTimeMillis() - start));
+                return response;
             } catch (Exception e) {
                 if(count > 10){
                     slackNotifyService.sendMessage("getLeagueListByPageSizeAndPage 10번 실패 : (pageSize :"+ pageSize +", page :" +page + ")" + e.getMessage());
@@ -155,6 +156,7 @@ public class PandaScoreApi {
                 Long start = System.currentTimeMillis();
                 response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), TeamDto[].class);
                 log.info("getTeamBySeriesId : " + (System.currentTimeMillis() - start));
+                return response;
             } catch (Exception e) {
                 if(count > 10) {
                     slackNotifyService.sendMessage("getTeamBySeriesId 10번 실패 : (seriesId : " + seriesId + ")" + e.getMessage());
