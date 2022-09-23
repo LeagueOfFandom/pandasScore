@@ -50,6 +50,13 @@ public class MatchDetailEntity {
     @Column(name = "teams", columnDefinition = "json")
     private List<Team> teams;
 
+    @Column(name = "alarm")
+    private Boolean alarm = false;
+
+    public void setAlarm(Boolean alarm) {
+        this.alarm = alarm;
+    }
+
     public MatchDetailEntity(Long id, LocalDateTime begin_at, LocalDateTime end_at, String status, Long length, List<Player> players, Winner winner, List<Team> teams) {
         this.id = id;
         this.begin_at = begin_at;
