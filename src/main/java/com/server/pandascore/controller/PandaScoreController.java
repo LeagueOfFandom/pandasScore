@@ -50,4 +50,9 @@ public class PandaScoreController {
         pandaScoreCrawling.getMatchListByLeagueId(leagueId);
         slackNotifyService.sendMessage("setAllMatchByLeagueId end");
     }
+
+    @PostMapping("/setLiveMatch")
+    public void setLiveMatch(){
+
+    }
 }

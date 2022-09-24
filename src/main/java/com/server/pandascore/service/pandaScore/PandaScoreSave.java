@@ -78,7 +78,6 @@ public class PandaScoreSave {
         Long id = matchDto.getId();
         MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
         if(matchEntity == null){
-
             matchRepository.save(matchDto.toEntity());
             //slack 알람 추가 필요.
         }

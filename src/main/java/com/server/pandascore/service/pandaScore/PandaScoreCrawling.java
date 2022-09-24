@@ -21,6 +21,10 @@ public class PandaScoreCrawling {
     private final PandaScoreSave pandaScoreSave;
     private final PandaScoreApi pandaScoreApi;
 
+    public void getLiveMatchList(){
+
+    }
+
     public void getAllMatchList(){
         List<Long> leagueIdList = pandaScoreSave.getAllLeagueIdList();
         leagueIdList.forEach(leagueId -> {
