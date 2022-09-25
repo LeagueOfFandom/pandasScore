@@ -48,158 +48,62 @@ public class PandaScoreApi {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", tokens.getPandascore());
 
-        return  new HttpEntity<String>(headers);
+        return  new HttpEntity<>(headers);
     }
 
-    public ResponseEntity<LeagueListDto[]> getLeagueListByPageSizeAndPage(int pageSize, int page) {
-        String url = "https://api.pandascore.co/lol/leagues?per_page=" + pageSize + "&page=" + page;
+    public ResponseEntity<?> getResponse(String url, Object classType) {
 
-        ResponseEntity<LeagueListDto[]> response = null;
-        Integer count = 0;
-        while(true) {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<?> response = null;
+
+        for(int i = 0; i < 10; i++) {
             try {
-                count++;
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), LeagueListDto[].class);
-                log.info("getLeagueListByPageSizeAndPage : " + (System.currentTimeMillis() - start));
+                response = restTemplate.exchange(url, HttpMethod.GET, setHeaders(), classType.getClass());
+                log.info("response : " + response);
                 return response;
             } catch (Exception e) {
-                if(count > 10){
-                    slackNotifyService.sendMessage("getLeagueListByPageSizeAndPage 10번 실패 : (pageSize :"+ pageSize +", page :" +page + ")" + e.getMessage());
-                    log.error(e.getMessage());
-                    return null;
+                log.error(i + "번 " + url + e.getMessage());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                 }
-                log.error(e.getMessage());
-                return null;
             }
         }
+        slackNotifyService.sendMessage("pandascore api error"+ url);
+        return null;
+    }
+    public ResponseEntity<MatchDto[]> getLiveMatchList(){
+        String url = "https://api.pandascore.co/lol/matches/running";
+        return (ResponseEntity<MatchDto[]>) getResponse(url, new MatchDto[0]);
+    }
+    public ResponseEntity<LeagueListDto[]> getLeagueListByPageSizeAndPage(int pageSize, int page) {
+        String url = "https://api.pandascore.co/lol/leagues?per_page=" + pageSize + "&page=" + page;
+        return (ResponseEntity<LeagueListDto[]>) getResponse(url, new LeagueListDto[0]);
     }
 
     public ResponseEntity<ChampionDto[]> getChampionListByPageSizeAndPage(int pageSize, int page) {
         String url = "https://api.pandascore.co/lol/champions?per_page=" + pageSize + "&page=" + page;
-
-        ResponseEntity<ChampionDto[]> response = null;
-        Integer count = 0;
-        while(true) {
-            try {
-                count++;
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), ChampionDto[].class);
-                log.info("getChampionListByPageSizeAndPage : " + (System.currentTimeMillis() - start));
-                return response;
-            } catch (Exception e) {
-                if(count > 10) {
-                    slackNotifyService.sendMessage("getChampionListByPageSizeAndPage 10번 실패 : (pageSize :"+ pageSize +", page :" +page + ")" + e.getMessage());
-                    log.error(e.getMessage());
-                    return null;
-                }
-                log.error(e.getMessage());
-                return null;
-            }
-        }
+        return (ResponseEntity<ChampionDto[]>) getResponse(url, new ChampionDto[0]);
     }
 
     public ResponseEntity<MatchDto[]> getMatchListByLeagueIdAndPageSizeAndPage(Long leagueId, int pageSize, int page) {
         String url = "https://api.pandascore.co/lol/matches?filter[league_id]=" + leagueId + "&per_page=" + pageSize + "&page=" + page;
-
-        ResponseEntity<MatchDto[]> response = null;
-        while(true) {
-            try {
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), MatchDto[].class);
-                log.info("getMatchListByLeagueIdAndPageSizeAndPage : " + (System.currentTimeMillis() - start));
-                return response;
-            } catch (Exception e) {
-                log.error(e.getMessage() + leagueId);
-                return null;
-            }
-        }
+        return (ResponseEntity<MatchDto[]>) getResponse(url, new MatchDto[0]);
     }
 
     public ResponseEntity<GameDto> getGameByMatchId(Long matchId) {
         String url = "https://api.pandascore.co/lol/games/" + matchId;
-
-        ResponseEntity<GameDto> response = null;
-        Integer count = 0;
-        while(true) {
-            try {
-                count++;
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), GameDto.class);
-                log.info("getGameByMatchId : " + (System.currentTimeMillis() - start));
-                return response;
-            } catch (Exception e) {
-                if(count > 10) {
-                    slackNotifyService.sendMessage("getGameByMatchId 10번 실패 : (matchId :" + matchId + ")" + e.getMessage());
-                    return null;
-                }
-                log.error(e.getMessage() + matchId);
-                log.info("getGameByMatchId 1초 후 재시도 : " + count + "번째");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                return null;
-            }
-        }
+        return (ResponseEntity<GameDto>) getResponse(url, new GameDto());
     }
 
     public ResponseEntity<TeamDto[]> getTeamBySeriesId(Long seriesId) {
         String url = "https://api.pandascore.co/lol/series/" + seriesId + "/teams";
-
-        ResponseEntity<TeamDto[]> response = null;
-        Integer count = 0;
-        while(true) {
-            try {
-                count++;
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), TeamDto[].class);
-                log.info("getTeamBySeriesId : " + (System.currentTimeMillis() - start));
-                return response;
-            } catch (Exception e) {
-                if(count > 10) {
-                    slackNotifyService.sendMessage("getTeamBySeriesId 10번 실패 : (seriesId : " + seriesId + ")" + e.getMessage());
-                    return null;
-                }
-                log.error(e.getMessage() + " seriesId : "+ seriesId);
-                log.info("getTeamBySeriesId 1초 후 재시도 : " + count + "번째");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                return null;
-            }
-        }
+        return (ResponseEntity<TeamDto[]>) getResponse(url, new TeamDto[0]);
     }
 
-    public ResponseEntity<TeamsDetailDto> getTeamDetailBySeriesAndTeamId(Long seriesId,Long teamId) {
+    public ResponseEntity<TeamsDetailDto> getTeamDetailBySeriesAndTeamId(Long seriesId,Long teamId) throws Exception {
         String url = "https://api.pandascore.co/lol/series/" + seriesId + "/teams/" + teamId + "/stats";
-
-        ResponseEntity<TeamsDetailDto> response = null;
-        Integer count = 0;
-        while(true) {
-            try {
-                count++;
-                Long start = System.currentTimeMillis();
-                response = new RestTemplate().exchange(url, HttpMethod.GET, setHeaders(), TeamsDetailDto.class);
-                log.info("getTeamDetailBySeriesAndTeamId : " + (System.currentTimeMillis() - start));
-                return response;
-            } catch (Exception e) {
-                if(count > 10) {
-                    slackNotifyService.sendMessage("getTeamDetailBySeriesAndTeamId 10번 실패 (seriesId :" + seriesId + ", teamId : " + teamId + ")" + e.getMessage());
-                    return null;
-                }
-                log.error(e.getMessage() +" seriesId : "+ seriesId + " teamId : "+ teamId);
-                log.info("getTeamDetailBySeriesAndTeamId 1초 후 재시도 : " + count + "번째");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                return null;
-            }
-        }
+        return (ResponseEntity<TeamsDetailDto>) getResponse(url, new TeamsDetailDto());
     }
 }
