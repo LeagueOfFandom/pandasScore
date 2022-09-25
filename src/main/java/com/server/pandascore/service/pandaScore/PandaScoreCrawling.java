@@ -22,7 +22,10 @@ public class PandaScoreCrawling {
     private final PandaScoreApi pandaScoreApi;
 
     public void getLiveMatchList(){
-
+        ResponseEntity<MatchDto[]> matchList = pandaScoreApi.getLiveMatchList();
+        for(MatchDto match : matchList.getBody()){
+            pandaScoreSave.MatchUpdate(match);
+        }
     }
 
     public void getAllMatchList(){
@@ -38,7 +41,6 @@ public class PandaScoreCrawling {
             getTeamListBySeriesId(seriesId);
         }
     }
-
 
     public void getTeamDetailBySeriesAndTeamId(Long seriesId, Long teamId) {
 

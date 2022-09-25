@@ -43,7 +43,7 @@ public class MatchDto {
     private List<Game> games;
     private Long league_id;
 
-    public MatchEntity toEntity(){
+    public MatchEntity toMatchEntity(){
         return MatchEntity.builder()
                 .rescheduled(rescheduled)
                 .winner(winner)

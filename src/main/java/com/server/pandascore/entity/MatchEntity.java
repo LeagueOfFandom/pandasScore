@@ -126,12 +126,6 @@ public class MatchEntity {
     @Column(name = "league_id")
     private Long leagueId;
 
-    @Column(name = "isAlarm")
-    private Boolean isAlarm = false;
-
-    public void setAlarm(Boolean alarm) {
-        isAlarm = alarm;
-    }
 
     @Builder
     public MatchEntity(Long id, Boolean rescheduled, String winner, String winnerType, LocalDateTime scheduledAt, List<Stream> streamsList, Boolean forfeit, String officialStreamUrl, Long numberOfGames, List<Opponents> opponents, String videoGameVersion, Long tournamentId, String name, League league, Tournament tournament, LocalDateTime beginAt, String slug, String status, String match_type, String liveEmbedUrl, Long winnerId, Serie serie, Boolean detailed_stats, List<Result> results, Boolean draw, Live live, LocalDateTime endAt, LocalDateTime modifiedAt, Long serieId, LocalDateTime originalScheduledAt, List<Game> games, Long leagueId) {

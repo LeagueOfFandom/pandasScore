@@ -52,7 +52,6 @@ public class PandaScoreSave {
         MatchDetailEntity matchDetailEntity = matchDetailRepository.findById(id).orElse(null);
         if(matchDetailEntity == null){
             matchDetailRepository.save(gameDto.toMatchDetailEntity());
-            //slack 알람 추가 필요.
         }
     }
 
@@ -63,7 +62,6 @@ public class PandaScoreSave {
         if(championEntity == null) {
             championEntity = new ChampionEntity(id, championImgUrl);
             championRepository.save(championEntity);
-            //slack 알람 추가 필요.
         }
     }
     public void TeamSave(TeamDto teamDto, Long seriesId){
@@ -73,12 +71,21 @@ public class PandaScoreSave {
             teamRepository.save(teamDto.toTeamEntity(seriesId));
         }
     }
+    public void MatchUpdate(MatchDto matchDto){
+        Long id = matchDto.getId();
+        MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
+        if(matchEntity == null){
+            matchRepository.save(matchDto.toMatchEntity());
+        }else if(!matchEntity.equals(matchDto.toMatchEntity())){
+            matchRepository.save(matchDto.toMatchEntity());
+        }
+    }
 
     public void MatchSave(MatchDto matchDto){
         Long id = matchDto.getId();
         MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
         if(matchEntity == null){
-            matchRepository.save(matchDto.toEntity());
+            matchRepository.save(matchDto.toMatchEntity());
             //slack 알람 추가 필요.
         }
     }
