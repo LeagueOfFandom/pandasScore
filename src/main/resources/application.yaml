@@ -40,6 +40,7 @@ spring:
 token:
   slack: ${localkey.slack-api.token}
   pandascore: ${localkey.pandascore-api.key}
+  fcm: ${localkey.fcm.key}
 
 server:
   port: 8080
@@ -63,8 +64,9 @@ spring:
     data: classpath:data.sql
     initialization-mode: always
 token:
-    slack: ${lof.slack.token}
-    pandascore: ${lof.pandascore.key}
+  slack: ${lof.slack.token}
+  pandascore: ${lof.pandascore.key}
+  fcm: ${lof.fcm.key}
 
 server:
   port: 80

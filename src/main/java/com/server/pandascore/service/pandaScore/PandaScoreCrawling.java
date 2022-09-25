@@ -24,7 +24,7 @@ public class PandaScoreCrawling {
     public void getLiveMatchList(){
         ResponseEntity<MatchDto[]> matchList = pandaScoreApi.getLiveMatchList();
         for(MatchDto match : matchList.getBody()){
-            pandaScoreSave.MatchUpdate(match);
+            pandaScoreSave.LiveMatchUpdate(match);
         }
     }
 

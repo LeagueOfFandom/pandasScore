@@ -4,6 +4,7 @@ import com.server.pandascore.dto.championDto.ChampionDto;
 import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.leagueDto.LeagueListDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
+import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
 import com.server.pandascore.entity.*;
@@ -71,13 +72,24 @@ public class PandaScoreSave {
             teamRepository.save(teamDto.toTeamEntity(seriesId));
         }
     }
-    public void MatchUpdate(MatchDto matchDto){
+    public void LiveMatchUpdate(MatchDto matchDto){
         Long id = matchDto.getId();
         MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
         if(matchEntity == null){
             matchRepository.save(matchDto.toMatchEntity());
-        }else if(!matchEntity.equals(matchDto.toMatchEntity())){
-            matchRepository.save(matchDto.toMatchEntity());
+        }else{
+            for(int i = 0; i < matchDto.getGames().size(); i++){
+                Game nowGame = matchDto.getGames().get(i);
+                Game beforeGame = matchEntity.getGames().get(i);
+
+                if(beforeGame.getStatus().equals("not_started") && nowGame.getStatus().equals("running")){
+                    matchRepository.delete(matchEntity);
+                    matchRepository.save(matchDto.toMatchEntity());
+                }
+                else if(beforeGame.getStatus().equals("running") && nowGame.getStatus().equals("finished")){
+
+                }
+            }
         }
     }
 
