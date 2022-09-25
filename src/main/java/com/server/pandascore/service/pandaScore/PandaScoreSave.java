@@ -39,7 +39,7 @@ public class PandaScoreSave {
         return seriesIdList;
     }
 
-    public void TeamDetailSave(TeamsDetailDto teamsDetailDto){
+    public void teamDetailSave(TeamsDetailDto teamsDetailDto){
         Long teamId = teamsDetailDto.getId();
         TeamEntity teamEntity = teamRepository.findById(teamId).orElse(null);
         if(teamEntity != null){
@@ -48,15 +48,22 @@ public class PandaScoreSave {
         }
     }
 
-    public void MatchDetailSave(GameDto gameDto){
+    public void matchDetailSave(GameDto gameDto){
         Long id = gameDto.getId();
         MatchDetailEntity matchDetailEntity = matchDetailRepository.findById(id).orElse(null);
         if(matchDetailEntity == null){
             matchDetailRepository.save(gameDto.toMatchDetailEntity());
+        } else {
+            MatchDetailEntity nowMatchDetailEntity = gameDto.toMatchDetailEntity();
+            nowMatchDetailEntity.setAlarm(matchDetailEntity.getAlarm());
+            if (!matchDetailEntity.equals(gameDto.toMatchDetailEntity())) {
+                matchDetailRepository.delete(matchDetailEntity);
+                matchDetailRepository.save(gameDto.toMatchDetailEntity());
+            }
         }
     }
 
-    public void ChampionSave(ChampionDto championDto){
+    public void championSave(ChampionDto championDto){
         Long id = championDto.getId();
         String championImgUrl = cloudFrontUrl + "/champion/" + championDto.getName() + "_0.jpg";
         ChampionEntity championEntity = championRepository.findById(id).orElse(null);
@@ -65,35 +72,25 @@ public class PandaScoreSave {
             championRepository.save(championEntity);
         }
     }
-    public void TeamSave(TeamDto teamDto, Long seriesId){
+    public void teamSave(TeamDto teamDto, Long seriesId){
         Long id = teamDto.getId();
         TeamEntity teamEntity = teamRepository.findByIdAndSeriesId(id, seriesId);
         if(teamEntity == null) {
             teamRepository.save(teamDto.toTeamEntity(seriesId));
         }
     }
-    public void LiveMatchUpdate(MatchDto matchDto){
+    public void matchUpdate(MatchDto matchDto){
         Long id = matchDto.getId();
         MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
         if(matchEntity == null){
             matchRepository.save(matchDto.toMatchEntity());
-        }else{
-            for(int i = 0; i < matchDto.getGames().size(); i++){
-                Game nowGame = matchDto.getGames().get(i);
-                Game beforeGame = matchEntity.getGames().get(i);
-
-                if(beforeGame.getStatus().equals("not_started") && nowGame.getStatus().equals("running")){
-                    matchRepository.delete(matchEntity);
-                    matchRepository.save(matchDto.toMatchEntity());
-                }
-                else if(beforeGame.getStatus().equals("running") && nowGame.getStatus().equals("finished")){
-
-                }
-            }
+        }else if(matchEntity.equals(matchDto.toMatchEntity())){
+            matchRepository.delete(matchEntity);
+            matchRepository.save(matchDto.toMatchEntity());
         }
     }
 
-    public void MatchSave(MatchDto matchDto){
+    public void matchSave(MatchDto matchDto){
         Long id = matchDto.getId();
         MatchEntity matchEntity = matchRepository.findById(id).orElse(null);
         if(matchEntity == null){
@@ -102,7 +99,7 @@ public class PandaScoreSave {
         }
     }
 
-    public void LeagueSave(LeagueListDto leagueListDto){
+    public void leagueSave(LeagueListDto leagueListDto){
         Long id = leagueListDto.getId();
         LeagueEntity leagueEntity = leagueRepository.findById(id).orElse(null);
 

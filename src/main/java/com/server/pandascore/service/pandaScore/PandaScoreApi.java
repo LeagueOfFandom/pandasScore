@@ -92,8 +92,8 @@ public class PandaScoreApi {
         return (ResponseEntity<MatchDto[]>) getResponse(url, new MatchDto[0]);
     }
 
-    public ResponseEntity<GameDto> getGameByMatchId(Long matchId) {
-        String url = "https://api.pandascore.co/lol/games/" + matchId;
+    public ResponseEntity<GameDto> getGameByGameId(Long gameId) {
+        String url = "https://api.pandascore.co/lol/games/" + gameId;
         return (ResponseEntity<GameDto>) getResponse(url, new GameDto());
     }
 
@@ -102,7 +102,7 @@ public class PandaScoreApi {
         return (ResponseEntity<TeamDto[]>) getResponse(url, new TeamDto[0]);
     }
 
-    public ResponseEntity<TeamsDetailDto> getTeamDetailBySeriesAndTeamId(Long seriesId,Long teamId) throws Exception {
+    public ResponseEntity<TeamsDetailDto> getTeamDetailBySeriesAndTeamId(Long seriesId,Long teamId) {
         String url = "https://api.pandascore.co/lol/series/" + seriesId + "/teams/" + teamId + "/stats";
         return (ResponseEntity<TeamsDetailDto>) getResponse(url, new TeamsDetailDto());
     }

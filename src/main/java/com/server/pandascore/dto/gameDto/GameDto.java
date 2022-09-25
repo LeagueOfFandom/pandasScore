@@ -21,7 +21,16 @@ public class GameDto {
     private List<Team> teams;
 
     public MatchDetailEntity toMatchDetailEntity(){
-        return new MatchDetailEntity(id, begin_at, end_at, status, length, players, winner, teams);
+        return MatchDetailEntity.builder()
+                .beginAt(begin_at)
+                .endAt(end_at)
+                .id(id)
+                .length(length)
+                .players(players)
+                .status(status)
+                .winner(winner)
+                .teams(teams)
+                .build();
     }
 
 }

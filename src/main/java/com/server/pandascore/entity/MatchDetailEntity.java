@@ -4,6 +4,7 @@ import com.server.pandascore.dto.gameDto.sub.player.Player;
 import com.server.pandascore.dto.gameDto.sub.teams.Team;
 import com.server.pandascore.dto.matchDto.sub.Winner;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -27,10 +28,10 @@ public class MatchDetailEntity {
     private Long id;
 
     @Column(name = "begin_at")
-    private LocalDateTime begin_at;
+    private LocalDateTime beginAt;
 
     @Column(name = "end_at")
-    private LocalDateTime end_at;
+    private LocalDateTime endAt;
 
     @Column(name = "status")
     private String status;
@@ -57,10 +58,11 @@ public class MatchDetailEntity {
         this.alarm = alarm;
     }
 
-    public MatchDetailEntity(Long id, LocalDateTime begin_at, LocalDateTime end_at, String status, Long length, List<Player> players, Winner winner, List<Team> teams) {
+    @Builder
+    public MatchDetailEntity(Long id, LocalDateTime beginAt, LocalDateTime endAt, String status, Long length, List<Player> players, Winner winner, List<Team> teams) {
         this.id = id;
-        this.begin_at = begin_at;
-        this.end_at = end_at;
+        this.beginAt = beginAt;
+        this.endAt = endAt;
         this.status = status;
         this.length = length;
         this.players = players;
