@@ -53,14 +53,11 @@ public class PandaScoreSave {
         MatchDetailEntity matchDetailEntity = matchDetailRepository.findById(id).orElse(null);
         if(matchDetailEntity == null){
             matchDetailRepository.save(gameDto.toMatchDetailEntity());
-        } else {
-            MatchDetailEntity nowMatchDetailEntity = gameDto.toMatchDetailEntity();
-            nowMatchDetailEntity.setAlarm(matchDetailEntity.getAlarm());
-            if (!matchDetailEntity.equals(gameDto.toMatchDetailEntity())) {
-                matchDetailRepository.delete(matchDetailEntity);
-                matchDetailRepository.save(gameDto.toMatchDetailEntity());
-            }
+        } else if (!matchDetailEntity.equals(gameDto.toMatchDetailEntity())) {
+            matchDetailRepository.delete(matchDetailEntity);
+            matchDetailRepository.save(gameDto.toMatchDetailEntity());
         }
+
     }
 
     public void championSave(ChampionDto championDto){

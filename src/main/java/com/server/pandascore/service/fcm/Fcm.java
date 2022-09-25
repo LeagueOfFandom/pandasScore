@@ -1,9 +1,13 @@
 package com.server.pandascore.service.fcm;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import com.server.pandascore.dto.fcmDto.FcmDto;
+import com.server.pandascore.dto.gameDto.GameDto;
 import com.server.pandascore.dto.matchDto.MatchDto;
+import com.server.pandascore.entity.MatchDetailEntity;
 import com.server.pandascore.entity.UserEntity;
 import com.server.pandascore.properties.Tokens;
+import com.server.pandascore.repository.MatchDetailRepository;
 import com.server.pandascore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +29,7 @@ public class Fcm {
     private final Tokens tokens;
 
     private final UserRepository userRepository;
+    private final MatchDetailRepository matchDetailRepository;
 
     private HttpHeaders setHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -33,7 +38,7 @@ public class Fcm {
 
         return headers;
     }
-    private void sendFcm(JSONObject jsonObject, MatchDto matchDto) {
+    private void sendFcm(JSONObject jsonObject) {
         String url = "https://fcm.googleapis.com/fcm/send";
         List<UserEntity> userList = userRepository.findAll();
         userList.forEach(user -> {
@@ -45,34 +50,25 @@ public class Fcm {
         });
     }
 
-    public void sendFcmByMatch(MatchDto matchDto, String status) {
-        String homeTeamName = matchDto.getOpponents().get(0).getOpponent().getAcronym();
-        String awayTeamName = matchDto.getOpponents().get(1).getOpponent().getAcronym();
-        Long setNumber = matchDto.getResults().get(0).getScore() + matchDto.getResults().get(1).getScore();
+    public void sendFcmByGame(GameDto gameDto) {
+        MatchDetailEntity matchDetailEntity = matchDetailRepository.findById(gameDto.getId()).orElse(null);
+        if(matchDetailEntity.getStatus().equals(gameDto.getStatus()))
+            return;
 
-        String title = homeTeamName + " vs " + awayTeamName + " " + setNumber + "세트";
+        String homeTeamName = gameDto.getTeams().get(0).getTeam().getAcronym();
+        String awayTeamName = gameDto.getTeams().get(1).getTeam().getAcronym();
 
-        if(status.equals("running"))
+        String title = homeTeamName + " vs " + awayTeamName + " " + gameDto.getPosition() + "번째 경기";
+
+        if(gameDto.equals("running"))
             title += " 시작";
-        else if (status.equals("finished"))
+        else if (gameDto.equals("finished"))
             title += " 종료";
 
         JSONObject notification = new JSONObject();
         notification.put("title", title);
 
-        sendFcm(notification, matchDto);
-        log.info("Fcm is sent");
-    }
-
-    public void sendFcmMatchStart(MatchDto matchDto) {
-        String homeTeamName = matchDto.getOpponents().get(0).getOpponent().getAcronym();
-        String awayTeamName = matchDto.getOpponents().get(1).getOpponent().getAcronym();
-        Long setNumber = matchDto.getResults().get(0).getScore() + matchDto.getResults().get(1).getScore();
-
-        JSONObject notification = new JSONObject();
-        notification.put("title", homeTeamName + " vs " + awayTeamName + " " + setNumber + "세트 시작");
-
-        sendFcm(notification, matchDto);
+        sendFcm(notification);
         log.info("Fcm is sent");
     }
 }

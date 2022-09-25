@@ -7,6 +7,7 @@ import com.server.pandascore.dto.matchDto.MatchDto;
 import com.server.pandascore.dto.matchDto.sub.Game;
 import com.server.pandascore.dto.teamDto.TeamDto;
 import com.server.pandascore.dto.teamsDetailDto.TeamsDetailDto;
+import com.server.pandascore.service.fcm.Fcm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 public class PandaScoreCrawling {
     private final PandaScoreSave pandaScoreSave;
     private final PandaScoreApi pandaScoreApi;
+    private final Fcm fcm;
 
     public void getLiveMatchList(){
         ResponseEntity<MatchDto[]> matchList = pandaScoreApi.getLiveMatchList();
@@ -27,6 +29,7 @@ public class PandaScoreCrawling {
             pandaScoreSave.matchUpdate(match);
             for(Game game : match.getGames()){
                 ResponseEntity<GameDto> gameDto = pandaScoreApi.getGameByGameId(game.getId());
+                fcm.sendFcmByGame(gameDto.getBody());
                 pandaScoreSave.matchDetailSave(gameDto.getBody());
             }
         }

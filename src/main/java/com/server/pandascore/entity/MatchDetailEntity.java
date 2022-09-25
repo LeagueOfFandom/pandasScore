@@ -51,15 +51,11 @@ public class MatchDetailEntity {
     @Column(name = "teams", columnDefinition = "json")
     private List<Team> teams;
 
-    @Column(name = "alarm")
-    private Boolean alarm = false;
-
-    public void setAlarm(Boolean alarm) {
-        this.alarm = alarm;
-    }
+    @Column(name = "position")
+    private Long position;
 
     @Builder
-    public MatchDetailEntity(Long id, LocalDateTime beginAt, LocalDateTime endAt, String status, Long length, List<Player> players, Winner winner, List<Team> teams) {
+    public MatchDetailEntity(Long id, LocalDateTime beginAt, LocalDateTime endAt, String status, Long length, List<Player> players, Winner winner, List<Team> teams, Long position) {
         this.id = id;
         this.beginAt = beginAt;
         this.endAt = endAt;
@@ -68,5 +64,6 @@ public class MatchDetailEntity {
         this.players = players;
         this.winner = winner;
         this.teams = teams;
+        this.position = position;
     }
 }
