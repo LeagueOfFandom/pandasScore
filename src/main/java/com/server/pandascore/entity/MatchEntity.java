@@ -28,8 +28,9 @@ public class MatchEntity {
     @Column(name = "rescheduled")
     private Boolean rescheduled;
 
+    @Type(type = "json")
     @Column(name = "winner")
-    private String winner;
+    private Winner winner;
 
     @Column(name = "winner_type")
     private String winnerType;
@@ -53,9 +54,6 @@ public class MatchEntity {
     @Type(type = "json")
     @Column(name = "oppontents", columnDefinition = "json")
     private List<Opponents> opponents;
-
-    @Column(name = "video_game_version")
-    private String videoGameVersion;
 
     @Column(name = "tournament_id")
     private Long tournamentId;
@@ -128,7 +126,7 @@ public class MatchEntity {
 
 
     @Builder
-    public MatchEntity(Long id, Boolean rescheduled, String winner, String winnerType, LocalDateTime scheduledAt, List<Stream> streamsList, Boolean forfeit, String officialStreamUrl, Long numberOfGames, List<Opponents> opponents, String videoGameVersion, Long tournamentId, String name, League league, Tournament tournament, LocalDateTime beginAt, String slug, String status, String match_type, String liveEmbedUrl, Long winnerId, Serie serie, Boolean detailed_stats, List<Result> results, Boolean draw, Live live, LocalDateTime endAt, LocalDateTime modifiedAt, Long serieId, LocalDateTime originalScheduledAt, List<Game> games, Long leagueId) {
+    public MatchEntity(Long id, Boolean rescheduled, Winner winner, String winnerType, LocalDateTime scheduledAt, List<Stream> streamsList, Boolean forfeit, String officialStreamUrl, Long numberOfGames, List<Opponents> opponents, Long tournamentId, String name, League league, Tournament tournament, LocalDateTime beginAt, String slug, String status, String match_type, String liveEmbedUrl, Long winnerId, Serie serie, Boolean detailed_stats, List<Result> results, Boolean draw, Live live, LocalDateTime endAt, LocalDateTime modifiedAt, Long serieId, LocalDateTime originalScheduledAt, List<Game> games, Long leagueId) {
         this.id = id;
         this.rescheduled = rescheduled;
         this.winner = winner;
@@ -139,7 +137,6 @@ public class MatchEntity {
         this.officialStreamUrl = officialStreamUrl;
         this.numberOfGames = numberOfGames;
         this.opponents = opponents;
-        this.videoGameVersion = videoGameVersion;
         this.tournamentId = tournamentId;
         this.name = name;
         this.league = league;

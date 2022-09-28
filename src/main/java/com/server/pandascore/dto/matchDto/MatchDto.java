@@ -11,7 +11,7 @@ import java.util.List;
 public class MatchDto {
 
     private Boolean rescheduled;
-    private String winner;
+    private Winner winner;
     private String winner_type;
     private LocalDateTime scheduled_at;
     private List<Stream> streams_list;
@@ -20,7 +20,6 @@ public class MatchDto {
     private Long id;
     private Long number_of_games;
     private List<Opponents> opponents;
-    private String videogame_version;
     private Long tournament_id;
     private String name;
     private League league;
@@ -55,7 +54,6 @@ public class MatchDto {
                 .id(id)
                 .numberOfGames(number_of_games)
                 .opponents(opponents)
-                .videoGameVersion(videogame_version)
                 .tournamentId(tournament_id)
                 .name(name)
                 .league(league)
