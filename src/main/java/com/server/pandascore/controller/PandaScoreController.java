@@ -53,6 +53,8 @@ public class PandaScoreController {
 
     @PostMapping("/setLiveMatch")
     public void setLiveMatch(){
-
+        slackNotifyService.sendMessage("setLiveMatch start");
+        pandaScoreCrawling.getLiveMatchList();
+        slackNotifyService.sendMessage("setLiveMatch end");
     }
 }

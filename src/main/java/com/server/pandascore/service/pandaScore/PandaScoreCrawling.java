@@ -11,6 +11,7 @@ import com.server.pandascore.service.fcm.Fcm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class PandaScoreCrawling {
     private final PandaScoreApi pandaScoreApi;
     private final Fcm fcm;
 
+    @Async
     public void getLiveMatchList(){
         ResponseEntity<MatchDto[]> matchList = pandaScoreApi.getLiveMatchList();
         for(MatchDto match : matchList.getBody()){
@@ -35,6 +37,7 @@ public class PandaScoreCrawling {
         }
     }
 
+    @Async
     public void getAllMatchList(){
         List<Long> leagueIdList = pandaScoreSave.getAllLeagueIdList();
         leagueIdList.forEach(leagueId -> {
@@ -42,6 +45,7 @@ public class PandaScoreCrawling {
         });
     }
 
+    @Async
     public void getAllTeamList(){
         List<Long> seriesIdList = pandaScoreSave.getAllLatestSeriesIdList();
         for(Long seriesId : seriesIdList){
@@ -54,6 +58,7 @@ public class PandaScoreCrawling {
         pandaScoreSave.teamDetailSave(response.getBody());
         log.info("TeamDetailList is saved");
     }
+
     public void getTeamListBySeriesId(Long seriesId){
 
         ResponseEntity<TeamDto[]> response = null;
@@ -121,6 +126,7 @@ public class PandaScoreCrawling {
         log.info("ChampionList is saved");
     }
 
+    @Async
     public void getLeagueList(){
 
         ResponseEntity<LeagueListDto[]> response = null;
