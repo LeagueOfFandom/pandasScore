@@ -106,4 +106,9 @@ public class PandaScoreApi {
         String url = "https://api.pandascore.co/lol/series/" + seriesId + "/teams/" + teamId + "/stats";
         return (ResponseEntity<TeamsDetailDto>) getResponse(url, new TeamsDetailDto());
     }
+
+    public ResponseEntity<MatchDto[]> getUpcomingMatchList(){
+        String url = "https://api.pandascore.co/lol/matches/upcoming";
+        return (ResponseEntity<MatchDto[]>) getResponse(url, new MatchDto[0]);
+    }
 }

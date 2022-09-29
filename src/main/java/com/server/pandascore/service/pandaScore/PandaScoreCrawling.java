@@ -25,6 +25,19 @@ public class PandaScoreCrawling {
     private final Fcm fcm;
 
     @Async
+    public void getUpcomingMatchList(){
+        ResponseEntity<MatchDto[]> matchDtoList = pandaScoreApi.getUpcomingMatchList();
+        for(MatchDto matchDto : matchDtoList.getBody()){
+            pandaScoreSave.matchUpdate(matchDto);
+            for(Game game : matchDto.getGames()){
+                ResponseEntity<GameDto> gameDto = pandaScoreApi.getGameByGameId(game.getId());
+                fcm.sendFcmByGame(gameDto.getBody());
+                pandaScoreSave.matchDetailSave(gameDto.getBody());
+            }
+        }
+    }
+
+    @Async
     public void getLiveMatchList(){
         ResponseEntity<MatchDto[]> matchList = pandaScoreApi.getLiveMatchList();
         for(MatchDto match : matchList.getBody()){
