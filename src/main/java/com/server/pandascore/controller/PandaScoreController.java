@@ -33,6 +33,7 @@ public class PandaScoreController {
         slackNotifyService.sendMessage("setAllMatch start");
         pandaScoreCrawling.getAllMatchList();
     }
+
     @PostMapping("/setAllTeam")
     public void setAllTeam(){
         slackNotifyService.sendMessage("setAllTeam start");
