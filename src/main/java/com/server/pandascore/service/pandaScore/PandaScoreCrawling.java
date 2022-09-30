@@ -97,6 +97,7 @@ public class PandaScoreCrawling {
         log.info("MatchDetail is saved");
     }
 
+    @Async
     public void getMatchListByLeagueId(Long leagueId) {
 
         ResponseEntity<MatchDto[]> response = null;
