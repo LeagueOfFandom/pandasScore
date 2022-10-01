@@ -72,8 +72,9 @@ public class PandaScoreSave {
     public void teamSave(TeamDto teamDto, Long seriesId){
         Long id = teamDto.getId();
         TeamEntity teamEntity = teamRepository.findByIdAndSeriesId(id, seriesId);
+        Long leagueId = leagueRepository.findIdByLatestSeriesId(seriesId);
         if(teamEntity == null) {
-            teamRepository.save(teamDto.toTeamEntity(seriesId));
+            teamRepository.save(teamDto.toTeamEntity(seriesId, leagueId));
         }
     }
     public void matchUpdate(MatchDto matchDto){

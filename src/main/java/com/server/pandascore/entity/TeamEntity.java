@@ -47,12 +47,15 @@ public class TeamEntity {
     @Column(name = "series_id")
     private Long seriesId;
 
+    @Column(name = "league_id")
+    private Long leagueId;
+
     public void setStatus(Status status) {
         this.status = status;
     }
 
 
-    public TeamEntity(Long id, String acronym, String imageUrl, String location, String name, List<PlayerDetails> players, Long seriesId) {
+    public TeamEntity(Long id, String acronym, String imageUrl, String location, String name, List<PlayerDetails> players, Long seriesId, Long leagueId) {
         this.id = id;
         this.acronym = acronym;
         this.imageUrl = imageUrl;
@@ -60,5 +63,6 @@ public class TeamEntity {
         this.name = name;
         this.players = players;
         this.seriesId = seriesId;
+        this.leagueId = leagueId;
     }
 }
