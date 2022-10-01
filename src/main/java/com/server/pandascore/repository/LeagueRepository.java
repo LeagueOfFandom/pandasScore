@@ -11,7 +11,7 @@ public interface LeagueRepository extends JpaRepository<LeagueEntity, Long> {
 
     @Query("select l.latestSeriesId from LeagueEntity l")
     List<Long> findAllLatestSeriesId();
-    @Query("select l.series from LeagueEntity l")
+    @Query("select l.id from LeagueEntity l where l.latestSeriesId = ?1")
     Long findIdByLatestSeriesId(Long latestSeriesId);
 
     @Query("select l.id from LeagueEntity l")
