@@ -158,5 +158,17 @@ public class PandaScoreCrawling {
         log.info("LeagueList is saved");
     }
 
+    public void getCurrentMatchListByLeagueId(Long leagueId) {
+        ResponseEntity<MatchDto[]> response = null;
+        response = pandaScoreApi.getMatchListByLeagueIdAndPageSizeAndPage(leagueId, 100, 1);
+        for (int i = 0; i < response.getBody().length; i++) {
+            pandaScoreSave.matchUpdate(response.getBody()[i]);
+            for(Game game : response.getBody()[i].getGames()){
+                Long gameId = game.getId();
+                getMatchDetailByMatchId(gameId);
+            }
+        }
+        log.info("MatchList is saved");
+    }
 }
 
