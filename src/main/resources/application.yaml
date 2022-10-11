@@ -25,7 +25,7 @@ spring:
       on-profile: localdb
     import: localkey.yaml
   datasource:
-    url: jdbc:mariadb://localhost:3306/lof
+    url: jdbc:mariadb://localhost:3306/lofDev
     username: root
     password: 1234
   jpa:
@@ -52,7 +52,7 @@ spring:
     activate:
       on-profile: serverdb
   datasource:
-    url: ${lof.mariadb.url}/lof
+    url: ${lof.mariadb.url.dev}?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: root
     password: ${lof.mariadb.password}
   jpa:
