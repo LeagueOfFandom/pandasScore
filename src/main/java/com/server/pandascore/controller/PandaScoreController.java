@@ -29,7 +29,7 @@ public class PandaScoreController {
     }
     @PostMapping("/setMatch")
     public void setMatch(@RequestParam Long leagueId){
-        slackNotifyService.sendMessage("setMatch start");
+        log.info("setMatch start");
         pandaScoreCrawling.getCurrentMatchListByLeagueId(leagueId);
     }
 
