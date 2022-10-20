@@ -74,7 +74,7 @@ public class PandaScoreApi {
         return null;
     }
     public ResponseEntity<MatchDto[]> getLiveMatchList(){
-        String url = "https://api.pandascore.co/lol/matches/running";
+        String url = "https://api.pandascore.co/lol/matches/running?filter[league_id]=297";
         return (ResponseEntity<MatchDto[]>) getResponse(url, new MatchDto[0]);
     }
     public ResponseEntity<LeagueListDto[]> getLeagueListByPageSizeAndPage(int pageSize, int page) {
